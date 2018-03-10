@@ -20,6 +20,7 @@
 		<jackson.version>1.9.10</jackson.version>
 		<hibernate.version>5.2.13.Final</hibernate.version>
 		<h2.version>1.4.196</h2.version>
+		<log4j.version>2.10.0</log4j.version>
 	</properties>
 
 	<dependencies>
@@ -73,6 +74,14 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+	<dependency>
+		<groupId>org.apache.logging.log4j</groupId>
+		<artifactId>log4j-core</artifactId>
+		<version>${log4j.version}</version>
+	</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>

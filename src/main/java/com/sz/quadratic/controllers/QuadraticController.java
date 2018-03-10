@@ -1,5 +1,7 @@
 package com.sz.quadratic.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,9 @@ import com.sz.quadratic.services.DecimalService;
 
 @Controller
 public class QuadraticController {
-
+	
+	private Logger logger = LogManager.getLogger(getClass());
+	
 	@Autowired
 	private IQuadraticService quadraticService;
 
@@ -36,7 +40,7 @@ public class QuadraticController {
         	quadratic.setB(Double.valueOf(bValue));
         	quadratic.setC(Double.valueOf(cValue));
     	} else {
-    		model.addAttribute("result", "Ошибка");
+    		model.addAttribute("result", "Error");
     		return "result";
     	}
     	
@@ -48,7 +52,7 @@ public class QuadraticController {
     		try {
 				quadraticService.create(quadratic);
 			} catch (QuadraticException e) {
-				model.addAttribute("result", "Ошибка:" + e.getMessage());
+				model.addAttribute("result", "Error:" + e.getMessage());
 			}
     	} else {
     		model.addAttribute("result", "Discriminant < 0");

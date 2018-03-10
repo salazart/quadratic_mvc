@@ -29,6 +29,16 @@ public class Quadratic implements IEntity{
 	@Column(name = "x2")
 	private double x2;
 	
+	public Quadratic() {
+	}
+	
+	public Quadratic(double a, double b, double c) {
+		super();
+		this.a = a;
+		this.b = b;
+		this.c = c;
+	}
+
 	public String toString() {
 		return "quadratic: id:" + id + ", a:" + a + ", b:" + b + ", c:" + c + ", x1:" + x1 + ", x2:" + x2;
 	}
