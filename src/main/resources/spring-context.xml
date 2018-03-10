@@ -37,5 +37,12 @@
 			</props>
 		</property>
 	</bean>
+	
+	<bean id="bean1" class="com.sz.quadratic.models.Quadratic">
+		<property name = "id" value = "444"/>
+		<property name = "a" value = "3"/>
+		<property name = "b" value = "4"/>
+		<property name = "c" value = "5"/>
+	</bean>
     
 </beans>
