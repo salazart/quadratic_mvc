@@ -48,7 +48,7 @@ public class Quadratic implements IEntity{
 	}
 	
 	public double getFirstResult(){
-		return (-b - Math.sqrt(getDiscriminant())) / (2 * a);
+		return (-b + Math.sqrt(getDiscriminant())) / (2 * a);
 	}
 	
 	public double getSecondResult(){

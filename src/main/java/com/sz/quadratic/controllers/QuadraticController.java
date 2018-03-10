@@ -24,10 +24,6 @@ public class QuadraticController {
 	@Autowired
 	private IQuadraticService quadraticService;
 
-	@Autowired
-	@Qualifier("bean1")
-	private Quadratic quadratic;
-
 	@RequestMapping(value = "/")
 	public String index() {
 		return "index";
@@ -45,12 +41,12 @@ public class QuadraticController {
         	quadratic.setB(Double.valueOf(bValue));
         	quadratic.setC(Double.valueOf(cValue));
     	} else {
-    		model.addAttribute("result", "помилка");
+    		model.addAttribute("result", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
     		return "result";
     	}
     	
     	if(quadratic.isResult()) {
-    		model.addAttribute("coefficients", "Коэффициенты: A=" + aValue + ", B=" + bValue + ", C=" + cValue);
+    		model.addAttribute("coefficients", "The coefficients are: A=" + aValue + ", B=" + bValue + ", C=" + cValue);
     		model.addAttribute("result", "X1=" + quadratic.getFirstResult() + ", X2=" + quadratic.getSecondResult());
     		try {
 				quadraticService.create(quadratic);
