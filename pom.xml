@@ -20,6 +20,7 @@
 		<jackson.version>1.9.10</jackson.version>
 		<hibernate.version>5.2.13.Final</hibernate.version>
 		<h2.version>1.4.196</h2.version>
+		<log4j.version>2.10.0</log4j.version>
 	</properties>
 
 	<dependencies>
@@ -69,15 +70,18 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+	<dependency>
+		<groupId>org.apache.logging.log4j</groupId>
+		<artifactId>log4j-core</artifactId>
+		<version>${log4j.version}</version>
+	</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>
@@ -93,7 +97,7 @@
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.11.v20150529</version>
+				<version>9.4.8.v20171121</version>
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<webApp>
