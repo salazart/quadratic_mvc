@@ -3,6 +3,8 @@ package com.sz.quadratic.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import com.sz.quadratic.interfaces.IEntity;
 
 public abstract class HibernateDAOImpl<T extends IEntity, P extends Serializable> implements IHibernateDAO<T, P>{
 	protected Class<T> clazz;
+	
+	private Logger logger = LogManager.getLogger(getClass());
 	
 	@Autowired
 	@Qualifier("localSessionFactory")
@@ -29,13 +33,13 @@ public abstract class HibernateDAOImpl<T extends IEntity, P extends Serializable
 	}
 	
 	public T create(T entity) throws QuadraticException{
-		
+		logger.debug("Creating entity into db with entity class:" + entity.getClass() + " and entity:" + entity);
 		try {
 			getCurrentSession().beginTransaction();
 			getCurrentSession().persist(entity);
 			getCurrentSession().getTransaction().commit();
 		} catch (Exception e) {
-			System.err.println(e);
+			logger.error(e);
 		} finally {
 			getCurrentSession().close();
 		}
@@ -43,7 +47,7 @@ public abstract class HibernateDAOImpl<T extends IEntity, P extends Serializable
 	}
 	
 	public T read(P id) throws QuadraticException {
-		System.out.println("Try read " + clazz.getName() + " by " + id);
+		logger.debug("Reading entity form db with entity class:" + id.getClass() + " and entity:" + id);
 		try {
 			getCurrentSession().beginTransaction();
 			return (T) getCurrentSession().get(clazz, id);

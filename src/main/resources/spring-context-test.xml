@@ -14,12 +14,11 @@
     <mvc:annotation-driven />
     <context:component-scan base-package="com.sz.quadratic" />
     
-   <context:property-placeholder location='classpath:database.properties' />
    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value='${db.driverClassName}' />
-		<property name="url" value='${db.url}' />
-		<property name="username" value='${db.username}' />
-		<property name="password" value='${db.password}' />
+		<property name="driverClassName" value='org.h2.Driver' />
+		<property name="url" value='jdbc:h2:~/test2' />
+		<property name="username" value='sa' />
+		<property name="password" value='' />
 	</bean>
 	
 	<bean id="localSessionFactory"
@@ -33,9 +32,15 @@
 				<prop key="hibernate.current_session_context_class">thread</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
 			</props>
 		</property>
 	</bean>
 	
+	<bean id="bean1" class="com.sz.quadratic.models.Quadratic">
+		<property name = "a" value = "3"/>
+		<property name = "b" value = "4"/>
+		<property name = "c" value = "5"/>
+	</bean>
+    
 </beans>

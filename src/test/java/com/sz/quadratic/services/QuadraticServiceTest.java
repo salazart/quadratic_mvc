@@ -3,10 +3,17 @@
  */
 package com.sz.quadratic.services;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
+import javax.transaction.Transactional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IQuadraticService;
@@ -16,41 +23,56 @@ import com.sz.quadratic.models.Quadratic;
  * @author lenovo
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath*:spring-context-test.xml")
+@Transactional
 public class QuadraticServiceTest {
+	private static final double A = 5;
+	private static final double B = 6;
+	private static final double C = 7;
+	
+	private Logger logger = LogManager.getLogger(getClass());
 
+	@Autowired
 	private IQuadraticService quadraticService;
-	
-	private Quadratic quadratic;
-	private long id;
-	
-	@Before
-	public void before() {
-		this.quadraticService = new QuadraticService();
-		
-		quadratic = new Quadratic();
-		quadratic.setA(5);
-		quadratic.setB(6);
-		quadratic.setC(7);
+
+	@Test
+	public void test() {
+		Quadratic quadratic = new Quadratic(A, B, C);
+		logger.debug("Try create quadratic:" + quadratic);
+		Quadratic quadraticResult = null;
+		try {
+			quadraticResult = quadraticService.create(quadratic);
+			logger.info("OK created quadratic:" + quadratic);
+		} catch (QuadraticException e) {
+			logger.error(e);
+		}
+
+		assertTrue(quadraticResult.getA() == quadratic.getA() 
+				&& quadraticResult.getB() == quadratic.getB()
+				&& quadraticResult.getC() == quadratic.getC() 
+				&& quadraticResult.getId() != 0);
 	}
 	
 	@Test
-	public void test() {
-		Quadratic quadratic1 = null;
+	public void createReadQuadraticTest() {
+		Quadratic quadratic = new Quadratic(A, B, C);
+		logger.debug("Try create quadratic:" + quadratic);
 		try {
-			quadratic1 = quadraticService.create(quadratic);
+			quadratic = quadraticService.create(quadratic);
+			logger.info("OK created quadratic:" + quadratic);
 		} catch (QuadraticException e) {
-			System.err.println(e);
+			logger.error(e);
 		}
-		System.out.println(quadratic1);
-		System.out.println(this.id);
-		
-		Long id = quadratic1.getId();
-		System.out.println(id);
-		this.id = id == null ? 0 : id;
-		System.out.println(this.id);
-		
-		System.out.println("id=" + id);
-		assertEquals("true", "true");
+		Quadratic quadraticResult = null;
+		try {
+			logger.debug("Try read quadratic by id:" + quadratic.getId());
+			quadraticResult = quadraticService.read(quadratic.getId());
+			logger.info("OK readed quadratic by id:" + quadratic);
+		} catch (QuadraticException e) {
+			logger.error(e);
+		}
+		assertTrue(quadratic.equals(quadraticResult));
 	}
-
+	
 }

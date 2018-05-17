@@ -29,6 +29,16 @@ public class Quadratic implements IEntity{
 	@Column(name = "x2")
 	private double x2;
 	
+	public Quadratic() {
+	}
+	
+	public Quadratic(double a, double b, double c) {
+		super();
+		this.a = a;
+		this.b = b;
+		this.c = c;
+	}
+
 	public String toString() {
 		return "quadratic: id:" + id + ", a:" + a + ", b:" + b + ", c:" + c + ", x1:" + x1 + ", x2:" + x2;
 	}
@@ -43,16 +53,8 @@ public class Quadratic implements IEntity{
 				&& ((Quadratic)object).getC() == this.getC();
 	}
 	
-	private double getDiscriminant(){
+	public double getDiscriminant(){
 		return Math.pow(b, 2) - 4 * a * c;
-	}
-	
-	public double getFirstResult(){
-		return (-b - Math.sqrt(getDiscriminant())) / (2 * a);
-	}
-	
-	public double getSecondResult(){
-		return (-b - Math.sqrt(getDiscriminant())) / (2 * a);
 	}
 	
 	public boolean isResult(){
@@ -108,6 +110,4 @@ public class Quadratic implements IEntity{
 	public void setX2(double x2) {
 		this.x2 = x2;
 	}
-
-	
 }
