@@ -1,5 +1,9 @@
 package com.sz.quadratic.controllers;
 
+import com.sz.quadratic.exceptions.QuadraticException;
+import com.sz.quadratic.interfaces.IQuadraticService;
+import com.sz.quadratic.models.Quadratic;
+import com.sz.quadratic.services.DecimalService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.sz.quadratic.exceptions.QuadraticException;
-import com.sz.quadratic.interfaces.IQuadraticService;
-import com.sz.quadratic.models.Quadratic;
-import com.sz.quadratic.services.DecimalService;
 
 @Controller
 public class QuadraticController {
@@ -60,4 +59,10 @@ public class QuadraticController {
     	
         return "result";
     }
+
+    @RequestMapping(value = "/all")
+    public String all(Model model) {
+        model.addAttribute("result", quadraticService.getAllQuadratics());
+        return "all";
+	}
 }

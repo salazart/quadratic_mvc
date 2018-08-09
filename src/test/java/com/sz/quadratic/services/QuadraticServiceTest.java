@@ -3,6 +3,8 @@
  */
 package com.sz.quadratic.services;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import javax.transaction.Transactional;
@@ -18,6 +20,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author lenovo
@@ -73,6 +78,36 @@ public class QuadraticServiceTest {
 			logger.error(e);
 		}
 		assertTrue(quadratic.equals(quadraticResult));
+	}
+
+	@Test
+	public void createGetAllQuadraticTest() {
+		List<Quadratic> quadratics = Arrays.asList(new Quadratic(A, B, C),
+				new Quadratic(A + 1, B + 1, C + 1),
+				new Quadratic(A + 2, B + 2, C + 2));
+		for (Quadratic quadratic : quadratics) {
+			logger.debug("Try create quadratic:" + quadratic);
+			try {
+				quadratic = quadraticService.create(quadratic);
+				logger.info("OK created quadratic:" + quadratic);
+			} catch (QuadraticException e) {
+				logger.error(e);
+			}
+		}
+
+		List<Quadratic> quadraticResult = null;
+		try {
+			logger.debug("Try get all quadratics");
+			quadraticResult = quadraticService.getAll();
+			logger.info("OK got all quadratics");
+			for (Quadratic quadratic : quadraticResult) {
+				logger.info(quadratic);
+			}
+			logger.info("OK got all quadratics");
+		} catch (QuadraticException e) {
+			logger.error(e);
+		}
+		assertThat(quadraticResult.size(), is(3));
 	}
 	
 }

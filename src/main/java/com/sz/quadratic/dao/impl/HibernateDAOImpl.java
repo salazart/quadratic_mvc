@@ -2,6 +2,7 @@ package com.sz.quadratic.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,5 +67,18 @@ public abstract class HibernateDAOImpl<T extends IEntity, P extends Serializable
 	public void delete(T entity) throws QuadraticException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<T> getAll() throws QuadraticException {
+		logger.debug("Reading list entity form db with entity class:" + clazz.getClass());
+		try {
+			getCurrentSession().beginTransaction();
+			return getCurrentSession()
+					.createQuery("from " + clazz.getName())
+					.list();
+		} finally {
+			getCurrentSession().close();
+		}
 	}
 }

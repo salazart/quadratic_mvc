@@ -1,7 +1,12 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css"
+		  href="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/resources/theme-crisp-all.css"/>
+	<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/ext-all.js"></script>
+	<script type="text/javascript" src="app.js"></script>
 <title>Start Page</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
