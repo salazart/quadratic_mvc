@@ -65,4 +65,10 @@ public class QuadraticController {
         model.addAttribute("result", quadraticService.getAllQuadratics());
         return "all";
 	}
+
+    @RequestMapping(value = "/updateCache")
+    public String cacheUpdate(Model model) {
+	    quadraticService.updateCash();
+	    return "cacheUpdated";
+    }
 }

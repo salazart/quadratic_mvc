@@ -6,6 +6,8 @@ import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,7 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 		return x2;
 	}
 
-    @Cacheable("quadratics")
+    @Cacheable(value = "quadratics")
     public List<Quadratic> getAllQuadratics(){
         simulateSlowService();
 		try {
@@ -50,4 +52,7 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
             logger.error(e);
         }
     }
+
+    @CacheEvict(value = "quadratics", allEntries=true)
+    public void updateCash(){}
 }
