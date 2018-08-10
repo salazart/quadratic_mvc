@@ -2,12 +2,12 @@ package com.sz.quadratic.services;
 
 import com.sz.quadratic.dao.impl.HibernateDAOImpl;
 import com.sz.quadratic.exceptions.QuadraticException;
+import com.sz.quadratic.interfaces.ICacheable;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implements IQuadraticService{
+public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implements IQuadraticService, ICacheable {
 
 	private Logger logger = LogManager.getLogger(getClass());
 
@@ -34,7 +34,7 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 		return x2;
 	}
 
-    @Cacheable(value = "quadratics")
+    @Cacheable(value = "quadratic")
     public List<Quadratic> getAllQuadratics(){
         simulateSlowService();
 		try {
@@ -54,7 +54,9 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
         }
     }
 
-    @CacheEvict(value = "quadratics", allEntries=true)
-	@Scheduled(fixedDelay=10000)
-    public void updateCash(){}
+	@CacheEvict(value = "quadratic", allEntries=true)
+	@Scheduled(fixedDelay = 10000)
+	public void clearCache() {
+        System.out.println("clear cache");
+    }
 }

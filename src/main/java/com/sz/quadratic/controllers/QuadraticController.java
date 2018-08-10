@@ -68,7 +68,7 @@ public class QuadraticController {
 
     @RequestMapping(value = "/updateCache")
     public String cacheUpdate(Model model) {
-	    quadraticService.updateCash();
+//	    quadraticService.updateCash();
 	    return "cacheUpdated";
     }
 }

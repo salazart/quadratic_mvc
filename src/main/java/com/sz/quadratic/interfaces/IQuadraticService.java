@@ -12,6 +12,4 @@ public interface IQuadraticService extends IHibernateDAO<Quadratic, Long>{
 	double getSecondResult(Quadratic quadratic);
 
 	List<Quadratic> getAllQuadratics();
-
-	void updateCash();
 }
