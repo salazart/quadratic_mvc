@@ -1,0 +1,20 @@
+<ehcache
+        updateCheck="true"
+        monitoring="autodetect"
+        dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir" />
+
+    <cache name="quadratic"
+           maxEntriesLocalHeap="10"
+           maxEntriesLocalDisk="1000"
+           eternal="false"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="5"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="none" />
+    </cache>
+
+</ehcache>
