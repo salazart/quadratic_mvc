@@ -48,11 +48,7 @@ public class QuadraticController {
     		double x2 = quadraticService.getSecondResult(quadratic);
     		model.addAttribute("coefficients", "The coefficients are: A=" + aValue + ", B=" + bValue + ", C=" + cValue);
     		model.addAttribute("result", "X1=" + x1 + ", X2=" + x2);
-    		try {
-				quadraticService.create(quadratic);
-			} catch (QuadraticException e) {
-				model.addAttribute("result", "Error:" + e.getMessage());
-			}
+    		quadraticService.saveQuadratic(quadratic);
     	} else {
     		model.addAttribute("result", "Discriminant < 0");
     	}
@@ -68,7 +64,7 @@ public class QuadraticController {
 
     @RequestMapping(value = "/updateCache")
     public String cacheUpdate(Model model) {
-//	    quadraticService.updateCash();
+	    quadraticService.clearCache();
 	    return "cacheUpdated";
     }
 }

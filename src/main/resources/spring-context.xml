@@ -9,7 +9,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
         
     <mvc:annotation-driven />
 	<cache:annotation-driven/>
@@ -41,20 +41,14 @@
 
 	<bean id="quadraticService" class="com.sz.quadratic.services.QuadraticService"/>
 
-	<task:scheduler id="scheduler" pool-size="1"/>
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:shared="true" p:config-location="classpath:ehcache.xml"/>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/>
 
-	<task:scheduled-tasks scheduler="scheduler">
-		<task:scheduled ref="quadraticService" method="clearCache" fixed-delay="20000"/>
-	</task:scheduled-tasks>
-
-    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
-        <property name="caches">
-            <set>
-                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
-					<property name="name" value="quadratic"/>
- 				</bean>
-            </set>
-        </property>
-    </bean>
-	
+    <!--<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">-->
+        <!--<property name="caches">-->
+            <!--<set>-->
+                <!--<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="quadratic"/>-->
+            <!--</set>-->
+        <!--</property>-->
+    <!--</bean>-->
 </beans>
