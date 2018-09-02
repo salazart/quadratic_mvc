@@ -6,6 +6,6 @@
 </head>
 <body>
 	<p>${coefficients}</p>
-    <p>Результат: ${result}</p>
+    <p>Result: ${result}</p>
 </body>
 </html>

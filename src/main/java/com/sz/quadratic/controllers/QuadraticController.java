@@ -1,6 +1,5 @@
 package com.sz.quadratic.controllers;
 
-import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import com.sz.quadratic.services.DecimalService;
@@ -62,9 +61,10 @@ public class QuadraticController {
         return "all";
 	}
 
-    @RequestMapping(value = "/updateCache")
+    @RequestMapping(value = "/clearCache")
     public String cacheUpdate(Model model) {
 	    quadraticService.clearCache();
-	    return "cacheUpdated";
+		model.addAttribute("result", "Cache is reloaded");
+	    return "clearCache";
     }
 }

@@ -11,7 +11,7 @@
            eternal="false"
            diskSpoolBufferSizeMB="20"
            timeToIdleSeconds="300"
-           timeToLiveSeconds="5"
+           timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off">
         <persistence strategy="none" />

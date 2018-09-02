@@ -7,6 +7,7 @@ import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +33,9 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 		return x2;
 	}
 
-    @Cacheable(value = "quadratic")
-    public List<Quadratic> getAllQuadratics(){
-        simulateSlowService();
+	@Cacheable(value = "quadratic")
+	public List<Quadratic> getAllQuadratics() {
+		simulateSlowService();
 		try {
 			return super.getAll();
 		} catch (QuadraticException e) {
@@ -43,19 +44,21 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 		}
 	}
 
-	private void simulateSlowService(){
-        long time = 3000L;
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            logger.error(e);
-        }
-    }
-
-	@CacheEvict(value = "quadratic", allEntries=true)
-    public Quadratic saveQuadratic(Quadratic quadratic){
+	private void simulateSlowService() {
+		long time = 5000L;
 		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			logger.error(e);
+		}
+	}
+
+	@CacheEvict(value = "quadratic", allEntries = true)
+	public Quadratic saveQuadratic(Quadratic quadratic) {
+		try {
+			logger.info("Try create Quadratic: " + quadratic);
 			create(quadratic);
+			logger.info("Object Quadratic created successfully: " + quadratic);
 		} catch (QuadraticException e) {
 			logger.error(e);
 		} finally {
@@ -63,8 +66,8 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 		}
 	}
 
-	@CacheEvict(value = "quadratic", allEntries=true)
+	@CacheEvict(value = "quadratic", allEntries = true)
 	public void clearCache() {
-        System.out.println("clear cache");
-    }
+		logger.debug("Cache cleared successfully.");
+	}
 }
