@@ -13,7 +13,9 @@
            timeToIdleSeconds="300"
            timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU"
-           transactionalMode="off">
+           transactionalMode="off"
+           logging="true"
+           statistics="true">
         <persistence strategy="none" />
     </cache>
 

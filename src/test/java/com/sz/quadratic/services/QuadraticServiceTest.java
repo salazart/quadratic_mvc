@@ -47,13 +47,8 @@ public class QuadraticServiceTest {
 	public void createQuadraticTest() {
 		Quadratic quadratic = new Quadratic(A, B, C);
 		logger.debug("Try create quadratic:" + quadratic);
-		Quadratic quadraticResult = null;
-		try {
-			quadraticResult = quadraticService.create(quadratic);
-			logger.info("OK created quadratic:" + quadratic);
-		} catch (QuadraticException e) {
-			logger.error(e);
-		}
+		Quadratic quadraticResult = quadraticService.saveQuadratic(quadratic);
+		logger.info("OK created quadratic:" + quadratic);
 
 		assertTrue(quadraticResult.getA() == quadratic.getA() 
 				&& quadraticResult.getB() == quadratic.getB()
@@ -65,20 +60,13 @@ public class QuadraticServiceTest {
 	public void createReadQuadraticTest() {
 		Quadratic quadratic = new Quadratic(A, B, C);
 		logger.debug("Try create quadratic:" + quadratic);
-		try {
-			quadratic = quadraticService.create(quadratic);
-			logger.info("OK created quadratic:" + quadratic);
-		} catch (QuadraticException e) {
-			logger.error(e);
-		}
-		Quadratic quadraticResult = null;
-		try {
-			logger.debug("Try read quadratic by id:" + quadratic.getId());
-			quadraticResult = quadraticService.read(quadratic.getId());
-			logger.info("OK readed quadratic by id:" + quadratic);
-		} catch (QuadraticException e) {
-			logger.error(e);
-		}
+		quadratic = quadraticService.saveQuadratic(quadratic);
+		logger.info("OK created quadratic:" + quadratic);
+
+		logger.debug("Try read quadratic by id:" + quadratic.getId());
+		Quadratic quadraticResult = quadraticService.readQuadratic(quadratic.getId());
+		logger.info("OK readed quadratic by id:" + quadratic);
+
 		assertTrue(quadratic.equals(quadraticResult));
 	}
 
@@ -89,26 +77,18 @@ public class QuadraticServiceTest {
 				new Quadratic(A + 2, B + 2, C + 2));
 		for (Quadratic quadratic : quadratics) {
 			logger.debug("Try create quadratic:" + quadratic);
-			try {
-				quadratic = quadraticService.create(quadratic);
-				logger.info("OK created quadratic:" + quadratic);
-			} catch (QuadraticException e) {
-				logger.error(e);
-			}
+			quadratic = quadraticService.saveQuadratic(quadratic);
+			logger.info("OK created quadratic:" + quadratic);
 		}
 
-		List<Quadratic> quadraticResult = null;
-		try {
-			logger.debug("Try get all quadratics");
-			quadraticResult = quadraticService.getAll();
-			logger.info("OK got all quadratics");
-			for (Quadratic quadratic : quadraticResult) {
-				logger.info(quadratic);
-			}
-			logger.info("OK got all quadratics");
-		} catch (QuadraticException e) {
-			logger.error(e);
+		logger.debug("Try get all quadratics");
+        List<Quadratic>	quadraticResult = quadraticService.getAllQuadratics();
+        logger.info("OK got all quadratics");
+		for (Quadratic quadratic : quadraticResult) {
+			logger.info(quadratic);
 		}
+		logger.info("OK got all quadratics");
+
 		assertThat(quadraticResult.size(), is(3));
 	}
 	

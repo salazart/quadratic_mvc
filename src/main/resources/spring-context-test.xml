@@ -21,7 +21,7 @@
 		<property name="password" value='' />
 	</bean>
 	
-	<bean id="localSessionFactory"
+	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.sz.quadratic.models" />
@@ -37,10 +37,4 @@
 		</property>
 	</bean>
 	
-	<bean id="bean1" class="com.sz.quadratic.models.Quadratic">
-		<property name = "a" value = "3"/>
-		<property name = "b" value = "4"/>
-		<property name = "c" value = "5"/>
-	</bean>
-    
 </beans>

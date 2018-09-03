@@ -7,7 +7,6 @@ import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,9 @@ import java.util.List;
 @Service
 public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implements IQuadraticService {
 
-	private Logger logger = LogManager.getLogger(getClass());
+	private Logger log = LogManager.getLogger(getClass());
 
-	@Override
+    @Override
 	public double getFirstResult(Quadratic quadratic) {
 		double x1 = (-quadratic.getB() + Math.sqrt(quadratic.getDiscriminant())) / (2 * quadratic.getA());
 		quadratic.setX1(x1);
@@ -39,7 +38,7 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 		try {
 			return super.getAll();
 		} catch (QuadraticException e) {
-			logger.error(e);
+			log.error(e);
 			return Collections.emptyList();
 		}
 	}
@@ -49,25 +48,35 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 		try {
 			Thread.sleep(time);
 		} catch (InterruptedException e) {
-			logger.error(e);
+			log.error(e);
 		}
 	}
 
 	@CacheEvict(value = "quadratic", allEntries = true)
 	public Quadratic saveQuadratic(Quadratic quadratic) {
 		try {
-			logger.info("Try create Quadratic: " + quadratic);
+			log.info("Try create Quadratic: " + quadratic);
 			create(quadratic);
-			logger.info("Object Quadratic created successfully: " + quadratic);
+			log.info("Object Quadratic created successfully: " + quadratic);
 		} catch (QuadraticException e) {
-			logger.error(e);
+			log.error(e);
 		} finally {
 			return quadratic;
 		}
 	}
 
-	@CacheEvict(value = "quadratic", allEntries = true)
+    @Override
+    public Quadratic readQuadratic(Long id) {
+        try {
+            return read(id);
+        } catch (QuadraticException e) {
+            log.error(e);
+            return null;
+        }
+    }
+
+    @CacheEvict(value = "quadratic", allEntries = true)
 	public void clearCache() {
-		logger.debug("Cache cleared successfully.");
+		log.debug("Cache cleared successfully.");
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IEntity;
 
-public interface IHibernateDAO <T extends IEntity, P extends Serializable>{
+public interface IDAO<T extends IEntity, P extends Serializable>{
 	T create(T entity) throws QuadraticException;
 	
 	T read(P id) throws QuadraticException;

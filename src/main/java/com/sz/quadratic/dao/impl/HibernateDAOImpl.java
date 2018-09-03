@@ -1,29 +1,26 @@
 package com.sz.quadratic.dao.impl;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-
+import com.sz.quadratic.dao.interfaces.IDAO;
+import com.sz.quadratic.exceptions.QuadraticException;
+import com.sz.quadratic.interfaces.IEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.sz.quadratic.dao.interfaces.IHibernateDAO;
-import com.sz.quadratic.exceptions.QuadraticException;
-import com.sz.quadratic.interfaces.IEntity;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
-public abstract class HibernateDAOImpl<T extends IEntity, P extends Serializable> implements IHibernateDAO<T, P>{
+public abstract class HibernateDAOImpl<T extends IEntity, P extends Serializable> implements IDAO<T, P> {
 	protected Class<T> clazz;
 	
 	private Logger logger = LogManager.getLogger(getClass());
 	
 	@Autowired
-	@Qualifier("localSessionFactory")
 	protected SessionFactory sessionFactory;
-	
+
 	public HibernateDAOImpl() {
 		this.clazz = (Class<T>) ((ParameterizedType) getClass()
 				.getGenericSuperclass()).getActualTypeArguments()[0];
