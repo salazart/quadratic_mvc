@@ -34,21 +34,11 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 
 	@Cacheable(value = "quadratic")
 	public List<Quadratic> getAllQuadratics() {
-		simulateSlowService();
 		try {
 			return super.getAll();
 		} catch (QuadraticException e) {
 			log.error(e);
 			return Collections.emptyList();
-		}
-	}
-
-	private void simulateSlowService() {
-		long time = 5000L;
-		try {
-			Thread.sleep(time);
-		} catch (InterruptedException e) {
-			log.error(e);
 		}
 	}
 
