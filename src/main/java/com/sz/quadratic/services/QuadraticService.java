@@ -1,11 +1,12 @@
 package com.sz.quadratic.services;
 
-import com.sz.quadratic.dao.impl.HibernateDAOImpl;
+import com.sz.quadratic.dao.interfaces.IDAO;
 import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,19 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implements IQuadraticService {
+public class QuadraticService implements IQuadraticService {
 
 	private Logger log = LogManager.getLogger(getClass());
 
-    @Override
+	private IDAO<Quadratic, Long> dao;
+
+	@Autowired
+	public void setDao(IDAO<Quadratic, Long> dao){
+		this.dao = dao;
+		this.dao.setClass(Quadratic.class);
+	}
+
+	@Override
 	public double getFirstResult(Quadratic quadratic) {
 		double x1 = (-quadratic.getB() + Math.sqrt(quadratic.getDiscriminant())) / (2 * quadratic.getA());
 		quadratic.setX1(x1);
@@ -35,7 +44,7 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 	@Cacheable(value = "quadratic")
 	public List<Quadratic> getAllQuadratics() {
 		try {
-			return super.getAll();
+			return dao.getAll();
 		} catch (QuadraticException e) {
 			log.error(e);
 			return Collections.emptyList();
@@ -46,7 +55,7 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
 	public Quadratic saveQuadratic(Quadratic quadratic) {
 		try {
 			log.info("Try create Quadratic: " + quadratic);
-			create(quadratic);
+			dao.create(quadratic);
 			log.info("Object Quadratic created successfully: " + quadratic);
 		} catch (QuadraticException e) {
 			log.error(e);
@@ -58,7 +67,7 @@ public class QuadraticService extends HibernateDAOImpl<Quadratic, Long> implemen
     @Override
     public Quadratic readQuadratic(Long id) {
         try {
-            return read(id);
+            return dao.read(id);
         } catch (QuadraticException e) {
             log.error(e);
             return null;

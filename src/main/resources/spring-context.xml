@@ -40,16 +40,7 @@
 		</property>
 	</bean>
 
-	<bean id="quadraticService" class="com.sz.quadratic.services.QuadraticService"/>
-
 	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:shared="true" p:config-location="classpath:ehcache.xml"/>
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/>
 
-    <!--<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">-->
-        <!--<property name="caches">-->
-            <!--<set>-->
-                <!--<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="quadratic"/>-->
-            <!--</set>-->
-        <!--</property>-->
-    <!--</bean>-->
 </beans>

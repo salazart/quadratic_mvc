@@ -10,22 +10,20 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-public abstract class HibernateDAOImpl<T extends IEntity, P extends Serializable> implements IDAO<T, P> {
-	protected Class<T> clazz;
+public abstract class AbstractHibernateDAO<T extends IEntity, P extends Serializable> implements IDAO<T, P> {
+	private Class<T> clazz;
 	
 	private Logger logger = LogManager.getLogger(getClass());
 	
 	@Autowired
 	protected SessionFactory sessionFactory;
 
-	public HibernateDAOImpl() {
-		this.clazz = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
+    public void setClass(Class<T> clazz) {
+    	this.clazz = clazz;
 	}
-	
+
 	protected final Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}

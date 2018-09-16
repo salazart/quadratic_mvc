@@ -7,6 +7,8 @@ import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IEntity;
 
 public interface IDAO<T extends IEntity, P extends Serializable>{
+	void setClass(Class<T> clazz);
+
 	T create(T entity) throws QuadraticException;
 	
 	T read(P id) throws QuadraticException;
