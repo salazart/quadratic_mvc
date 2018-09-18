@@ -1,0 +1,31 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <cache:annotation-driven/>
+
+    <bean id="sessionFactory" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.hibernate.SessionFactory" />
+    </bean>
+
+    <bean id="dao" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.sz.quadratic.dao.interfaces.IDAO" />
+    </bean>
+
+    <bean id="quadraticService" class="com.sz.quadratic.services.QuadraticService">
+        <property name="dao" ref="dao"/>
+    </bean>
+
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" name="quadratic"/>
+            </set>
+        </property>
+    </bean>
+
+</beans>

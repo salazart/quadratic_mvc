@@ -8,8 +8,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
-import javax.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -19,7 +17,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 
@@ -31,7 +28,7 @@ import java.util.List;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath*:spring-context-test.xml")
+@ContextConfiguration("classpath*:spring-context-for-test.xml")
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class QuadraticServiceTest {
 	private static final double A = 5;
