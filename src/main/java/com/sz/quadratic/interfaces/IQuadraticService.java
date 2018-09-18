@@ -15,4 +15,6 @@ public interface IQuadraticService extends ICacheable{
 	Quadratic saveQuadratic(Quadratic quadratic);
 
 	Quadratic readQuadratic(Long id);
+
+	List<Quadratic> getQuadraticsByCoefficients(Quadratic quadratic);
 }

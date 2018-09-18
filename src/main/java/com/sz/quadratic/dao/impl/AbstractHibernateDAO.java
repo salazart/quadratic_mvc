@@ -9,6 +9,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
 
@@ -72,6 +75,21 @@ public abstract class AbstractHibernateDAO<T extends IEntity, P extends Serializ
 			return getCurrentSession()
 					.createQuery("from " + clazz.getName())
 					.list();
+		} finally {
+			getCurrentSession().close();
+		}
+	}
+
+	@Override
+	public List getByCriteria(CriteriaQuery criteria) {
+		logger.debug("Reading entities by criteria form db with entity class:" + clazz.getClass());
+		try {
+			getCurrentSession().beginTransaction();
+			CriteriaBuilder builder = getCurrentSession().getCriteriaBuilder();
+			criteria = builder.createQuery(clazz.getClass());
+			Root<T> root = criteria.from(clazz.getClass());
+			criteria.where(builder.equal(root.get("name"),"Ram"));
+			return getCurrentSession().createQuery(criteria).getResultList();
 		} finally {
 			getCurrentSession().close();
 		}

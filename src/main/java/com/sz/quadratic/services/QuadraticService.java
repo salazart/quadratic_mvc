@@ -74,7 +74,12 @@ public class QuadraticService implements IQuadraticService {
         }
     }
 
-    @CacheEvict(value = "quadratic", allEntries = true)
+	@Override
+	public List<Quadratic> getQuadraticsByCoefficients(Quadratic quadratic) {
+		return null;
+	}
+
+	@CacheEvict(value = "quadratic", allEntries = true)
 	public void clearCache() {
 		log.debug("Cache cleared successfully.");
 	}
