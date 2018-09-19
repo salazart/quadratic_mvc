@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface IQuadraticService extends ICacheable{
 	
-	double getFirstResult(Quadratic quadratic);
-	
-	double getSecondResult(Quadratic quadratic);
+	void calculateResult(Quadratic quadratic);
 
+	boolean isResult(Quadratic quadratic);
+	
 	List<Quadratic> getAllQuadratics();
 
 	Quadratic saveQuadratic(Quadratic quadratic);

@@ -53,14 +53,6 @@ public class Quadratic implements IEntity{
 				&& ((Quadratic)object).getC() == this.getC();
 	}
 	
-	public double getDiscriminant(){
-		return Math.pow(b, 2) - 4 * a * c;
-	}
-	
-	public boolean isResult(){
-		return getDiscriminant() >= 0;
-	}
-
 	@Override
 	public Long getId() {
 		return id;

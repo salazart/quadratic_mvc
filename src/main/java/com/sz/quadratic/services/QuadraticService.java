@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Service
 public class QuadraticService implements IQuadraticService {
@@ -29,18 +31,31 @@ public class QuadraticService implements IQuadraticService {
 		this.dao.setClass(Quadratic.class);
 	}
 
-	@Override
-	public double getFirstResult(Quadratic quadratic) {
-		double x1 = (-quadratic.getB() + Math.sqrt(quadratic.getDiscriminant())) / (2 * quadratic.getA());
-		quadratic.setX1(x1);
-		return x1;
+	private double getDiscriminant(Quadratic quadratic){
+		return Math.pow(quadratic.getB(), 2) - 4 * quadratic.getA() * quadratic.getC();
 	}
 
 	@Override
-	public double getSecondResult(Quadratic quadratic) {
-		double x2 = (-quadratic.getB() - Math.sqrt(quadratic.getDiscriminant())) / (2 * quadratic.getA());
-		quadratic.setX2(x2);
-		return x2;
+	public boolean isResult(Quadratic quadratic){
+		return getDiscriminant(quadratic) >= 0;
+	}
+
+	private double getFirstResult(Quadratic quadratic) {
+		return (-quadratic.getB() + Math.sqrt(getDiscriminant(quadratic))) / (2 * quadratic.getA());
+	}
+
+	private double getSecondResult(Quadratic quadratic) {
+		return (-quadratic.getB() - Math.sqrt(getDiscriminant(quadratic))) / (2 * quadratic.getA());
+	}
+
+	private double calculateResult(){
+		return 0;
+	}
+
+	@Override
+	public void calculateResult(Quadratic quadratic) {
+		quadratic.setX1(getFirstResult(quadratic));
+		quadratic.setX2(getSecondResult(quadratic));
 	}
 
 	@Cacheable(value = "quadratic")
