@@ -2,6 +2,7 @@ package com.sz.quadratic.services;
 
 import com.sz.quadratic.dao.interfaces.IDAO;
 import com.sz.quadratic.exceptions.QuadraticException;
+import com.sz.quadratic.interfaces.ExpressionFunction;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.DoubleFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 public class QuadraticService implements IQuadraticService {
@@ -40,22 +43,17 @@ public class QuadraticService implements IQuadraticService {
 		return getDiscriminant(quadratic) >= 0;
 	}
 
-	private double getFirstResult(Quadratic quadratic) {
-		return (-quadratic.getB() + Math.sqrt(getDiscriminant(quadratic))) / (2 * quadratic.getA());
-	}
+	private ExpressionFunction plusFunction = (a, b) -> a + b;
+	private ExpressionFunction minusFunction = (a,b) -> a - b;
 
-	private double getSecondResult(Quadratic quadratic) {
-		return (-quadratic.getB() - Math.sqrt(getDiscriminant(quadratic))) / (2 * quadratic.getA());
-	}
-
-	private double calculateResult(){
-		return 0;
+	private double calculateResult(Quadratic quadratic, ExpressionFunction expressionFunction){
+		return (expressionFunction.method(-quadratic.getB(), Math.sqrt(getDiscriminant(quadratic))) / (2 * quadratic.getA()));
 	}
 
 	@Override
 	public void calculateResult(Quadratic quadratic) {
-		quadratic.setX1(getFirstResult(quadratic));
-		quadratic.setX2(getSecondResult(quadratic));
+		quadratic.setX1(calculateResult(quadratic, plusFunction));
+		quadratic.setX2(calculateResult(quadratic, minusFunction));
 	}
 
 	@Cacheable(value = "quadratic")
