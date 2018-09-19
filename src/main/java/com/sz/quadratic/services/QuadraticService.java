@@ -6,6 +6,8 @@ import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -59,9 +61,8 @@ public class QuadraticService implements IQuadraticService {
 			log.info("Object Quadratic created successfully: " + quadratic);
 		} catch (QuadraticException e) {
 			log.error(e);
-		} finally {
-			return quadratic;
 		}
+		return quadratic;
 	}
 
     @Override
@@ -76,7 +77,11 @@ public class QuadraticService implements IQuadraticService {
 
 	@Override
 	public List<Quadratic> getQuadraticsByCoefficients(Quadratic quadratic) {
-		return null;
+		Criteria criteria = dao.getCriteria();
+		criteria.add(Restrictions.eq("a", quadratic.getA()));
+		criteria.add(Restrictions.eq("b", quadratic.getB()));
+		criteria.add(Restrictions.eq("c", quadratic.getC()));
+		return dao.getByCriteria(criteria);
 	}
 
 	@CacheEvict(value = "quadratic", allEntries = true)

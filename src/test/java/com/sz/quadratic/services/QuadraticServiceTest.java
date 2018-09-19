@@ -1,13 +1,7 @@
-/**
- * 
- */
 package com.sz.quadratic.services;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
-
+import com.sz.quadratic.interfaces.IQuadraticService;
+import com.sz.quadratic.models.Quadratic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -17,14 +11,16 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sz.quadratic.interfaces.IQuadraticService;
-import com.sz.quadratic.models.Quadratic;
-
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
+
 /**
- * @author lenovo
+ * @author Alexander Sydorchuk
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -88,5 +84,26 @@ public class QuadraticServiceTest {
 
 		assertThat(quadraticResult.size(), is(3));
 	}
-	
+
+	@Test
+	public void createGetByCriteriaQuadraticTest() {
+		List<Quadratic> quadratics = Arrays.asList(
+				new Quadratic(1, 2, 1),
+				new Quadratic(1, 3, 1),
+				new Quadratic(1, 4, 1));
+		for (Quadratic quadratic : quadratics) {
+			logger.debug("Try create quadratic:" + quadratic);
+			quadratic = quadraticService.saveQuadratic(quadratic);
+			logger.info("OK created quadratic:" + quadratic);
+		}
+
+		logger.debug("Try get quadratics by coefficients");
+		List<Quadratic>	resultQuadratics = quadraticService.getQuadraticsByCoefficients(new Quadratic(1, 3, 1));
+		assertThat(resultQuadratics.size(), is(1));
+
+		Quadratic resultQuadratic = resultQuadratics.get(0);
+		assertThat(resultQuadratic.getA(), is(1.0));
+		assertThat(resultQuadratic.getB(), is(3.0));
+		assertThat(resultQuadratic.getC(), is(1.0));
+	}
 }
