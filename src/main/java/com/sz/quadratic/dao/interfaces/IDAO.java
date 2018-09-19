@@ -1,13 +1,11 @@
 package com.sz.quadratic.dao.interfaces;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IEntity;
-import org.hibernate.criterion.Disjunction;
+import org.hibernate.Criteria;
 
-import javax.persistence.criteria.CriteriaQuery;
+import java.io.Serializable;
+import java.util.List;
 
 public interface IDAO<T extends IEntity, P extends Serializable>{
 	void setClass(Class<T> clazz);
@@ -20,7 +18,9 @@ public interface IDAO<T extends IEntity, P extends Serializable>{
 	
 	void delete(T entity) throws QuadraticException;
 
-	List<T> getAll() throws QuadraticException;
+	List getAll() throws QuadraticException;
 
-	List getByCriteria(CriteriaQuery criteria);
+	List getByCriteria(Criteria criteria);
+
+	Criteria getCriteria();
 }
