@@ -3,19 +3,20 @@ package com.sz.quadratic.controllers;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import com.sz.quadratic.services.DecimalService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.util.List;
 
 @Controller
 public class QuadraticController {
-	
-	private Logger logger = LogManager.getLogger(getClass());
-	
+	private static final String COEFFICIENTS_TEXT = "The coefficients are: A=%f, B=%f, C=%f";
+	private static final String RESULT_TEXT = "X1=%f; X2=%f";
+	private static final String WITH_OUT_RESULT_TEXT = "Discriminant < 0";
+	private static final String ERROR = "An error occurred in input data.";
+
 	@Autowired
 	private IQuadraticService quadraticService;
 
@@ -26,9 +27,9 @@ public class QuadraticController {
 	
 	@RequestMapping("/result")
     public String result(
-    		@RequestParam(value="a", required=true) String aValue,
-    		@RequestParam(value="b", required=true) String bValue,
-    		@RequestParam(value="c", required=true) String cValue, Model model) {
+    		@RequestParam(value="a") String aValue,
+    		@RequestParam(value="b") String bValue,
+    		@RequestParam(value="c") String cValue, Model model) {
     	
 		Quadratic quadratic = new Quadratic();
     	if(DecimalService.isDecimal(aValue) 
@@ -38,18 +39,23 @@ public class QuadraticController {
         	quadratic.setB(Double.valueOf(bValue));
         	quadratic.setC(Double.valueOf(cValue));
     	} else {
-    		model.addAttribute("result", "Error");
+    		model.addAttribute("result", ERROR);
     		return "result";
     	}
     	
-    	if(quadratic.isResult()) {
-    		double x1 = quadraticService.getFirstResult(quadratic);
-    		double x2 = quadraticService.getSecondResult(quadratic);
-    		model.addAttribute("coefficients", "The coefficients are: A=" + aValue + ", B=" + bValue + ", C=" + cValue);
-    		model.addAttribute("result", "X1=" + x1 + ", X2=" + x2);
-    		quadraticService.saveQuadratic(quadratic);
+    	if(quadraticService.isResult(quadratic)) {
+    		List<Quadratic> quadratics = quadraticService.getQuadraticsByCoefficients(quadratic);
+			if (!quadratics.isEmpty()) {
+				quadratic = quadratics.get(0);
+			} else {
+    			quadraticService.calculateResult(quadratic);
+    			quadraticService.saveQuadratic(quadratic);
+			}
+			model.addAttribute("coefficients",
+					String.format(COEFFICIENTS_TEXT, quadratic.getA(), quadratic.getB(), quadratic.getC()));
+    		model.addAttribute("result", String.format(RESULT_TEXT, quadratic.getX1(), quadratic.getX2()));
     	} else {
-    		model.addAttribute("result", "Discriminant < 0");
+    		model.addAttribute("result", WITH_OUT_RESULT_TEXT);
     	}
     	
         return "result";

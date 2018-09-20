@@ -43,17 +43,14 @@ public class QuadraticService implements IQuadraticService {
 		return getDiscriminant(quadratic) >= 0;
 	}
 
-	private ExpressionFunction plusFunction = (a, b) -> a + b;
-	private ExpressionFunction minusFunction = (a,b) -> a - b;
-
 	private double calculateResult(Quadratic quadratic, ExpressionFunction expressionFunction){
 		return (expressionFunction.method(-quadratic.getB(), Math.sqrt(getDiscriminant(quadratic))) / (2 * quadratic.getA()));
 	}
 
 	@Override
 	public void calculateResult(Quadratic quadratic) {
-		quadratic.setX1(calculateResult(quadratic, plusFunction));
-		quadratic.setX2(calculateResult(quadratic, minusFunction));
+		quadratic.setX1(calculateResult(quadratic, (a, b) -> a + b));
+		quadratic.setX2(calculateResult(quadratic, (a,b) -> a - b));
 	}
 
 	@Cacheable(value = "quadratic")
