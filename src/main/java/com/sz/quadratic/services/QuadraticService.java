@@ -11,34 +11,24 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import java.util.Collections;
 import java.util.List;
 
 @Service
+@ManagedBean(name = "quadraticService")
 public class QuadraticService implements IQuadraticService {
 
 	private Logger log = LogManager.getLogger(getClass());
 
+    @ManagedProperty(value = "#{hibernateDao}")
 	private IDAO<Quadratic, Long> dao;
 
 	@Autowired
 	public void setDao(IDAO<Quadratic, Long> dao){
 		this.dao = dao;
 		this.dao.setClass(Quadratic.class);
-	}
-
-	@Override
-	public double getFirstResult(Quadratic quadratic) {
-		double x1 = (-quadratic.getB() + Math.sqrt(quadratic.getDiscriminant())) / (2 * quadratic.getA());
-		quadratic.setX1(x1);
-		return x1;
-	}
-
-	@Override
-	public double getSecondResult(Quadratic quadratic) {
-		double x2 = (-quadratic.getB() - Math.sqrt(quadratic.getDiscriminant())) / (2 * quadratic.getA());
-		quadratic.setX2(x2);
-		return x2;
 	}
 
 	@Cacheable(value = "quadratic")

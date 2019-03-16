@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+    <title>Вычисление квадратного уравнения</title>
+</head>
+<body>
+<h:form>
+    <h3>Вычисление квадратного уравнения</h3>
+    <br/>
+    <h4>Введи коэффициенты квадратного уравнения</h4>
+    <h:outputLabel value="A="/>
+    <h:inputText id="a" value="#{quadratic.a}" size="6">
+        <f:validateRegex pattern= "-?\\d+(\\.\\d+)?"/>
+    </h:inputText>
+    <h:outputLabel value="B="/>
+    <h:inputText id="b" value="#{quadratic.b}" size="6">
+        <f:validateRegex pattern= "-?\\d+(\\.\\d+)?"/>
+    </h:inputText>
+    <h:outputLabel value="C="/>
+    <h:inputText id="c" value="#{quadratic.c}" size="6">
+        <f:validateRegex pattern= "-?\\d+(\\.\\d+)?"/>
+    </h:inputText>
+    <br/>
+    <h:message for="a" style="color: red"/>
+    <h:message for="b" style="color: red"/>
+    <h:message for="c" style="color: red"/>
+    <br/>
+    <h:commandButton action="#{jsfQuadraticController.clearCoefficients}" value="Очистить"/>
+    <h:commandButton action="#{jsfQuadraticController.count}" value="Высчетать"/>
+</h:form>
+<br/>
+<h4>#{jsfQuadraticController.result}</h4>
+</body>
+</html>

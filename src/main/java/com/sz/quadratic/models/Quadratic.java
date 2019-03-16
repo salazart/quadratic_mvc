@@ -1,5 +1,6 @@
 package com.sz.quadratic.models;
 
+import javax.faces.bean.ManagedBean;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import com.sz.quadratic.interfaces.IEntity;
 
 @Entity
 @Table(name = "quadratic")
+@ManagedBean(name = "quadratic")
 public class Quadratic implements IEntity{
 
 	@Id
@@ -53,12 +55,20 @@ public class Quadratic implements IEntity{
 				&& ((Quadratic)object).getC() == this.getC();
 	}
 	
-	public double getDiscriminant(){
+	private double getDiscriminant(){
 		return Math.pow(b, 2) - 4 * a * c;
 	}
 	
-	public boolean isResult(){
-		return getDiscriminant() >= 0;
+	private double getFirstResult() {
+		double x1 = (-getB() + Math.sqrt(getDiscriminant())) / (2 * getA());
+		setX1(x1);
+		return x1;
+	}
+
+	public double getSecondResult() {
+		double x2 = (-getB() - Math.sqrt(getDiscriminant())) / (2 * getA());
+		setX2(x2);
+		return x2;
 	}
 
 	@Override
