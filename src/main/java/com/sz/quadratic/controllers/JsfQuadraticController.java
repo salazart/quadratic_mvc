@@ -8,37 +8,39 @@ import javax.faces.bean.ManagedProperty;
 
 @ManagedBean(name = "jsfQuadraticController", eager = true)
 public class JsfQuadraticController {
-    @ManagedProperty(value = "#{quadratic}")
-    private Quadratic quadratic;
-
     @ManagedProperty(value = "#{quadraticService}")
     private IQuadraticService quadraticService;
 
-    public JsfQuadraticController() {
-        System.out.println("JsfQuadraticController started!");
-    }
+    @ManagedProperty(value = "")
+    private String result;
+
+    @ManagedProperty(value = "")
+    private String a;
+    @ManagedProperty(value = "")
+    private String b;
+    @ManagedProperty(value = "")
+    private String c;
 
     public String count() {
-        if (quadratic.isResult()) {
-            double firstResult = quadraticService.getFirstResult(quadratic);
-            double secondResult = quadraticService.getSecondResult(quadratic);
-        }
-
-//        result = "Результат:" + quadratic.getA() + quadratic.getB() + quadratic.getC();
+        Quadratic q = getQuadraticFromForm();
+        result = q == null || q.getX1() == null
+                ? "The quadratic equation does't have result"
+                : String.format("X1=%.2f, X2=%.2f", q.getX1(), q.getX2());
         return "home";
+    }
+
+    private Quadratic getQuadraticFromForm(){
+        return a == null || a.isEmpty() || b == null || b.isEmpty() || c == null || c.isEmpty()
+                ? null
+                : new Quadratic(Double.parseDouble(a), Double.parseDouble(b), Double.parseDouble(c));
     }
 
     public String clearCoefficients() {
-        quadratic = new Quadratic();
+        a = "";
+        b = "";
+        c = "";
+        result = "";
         return "home";
-    }
-
-    public Quadratic getQuadratic() {
-        return quadratic;
-    }
-
-    public void setQuadratic(Quadratic quadratic) {
-        this.quadratic = quadratic;
     }
 
     public IQuadraticService getQuadraticService() {
@@ -47,5 +49,37 @@ public class JsfQuadraticController {
 
     public void setQuadraticService(IQuadraticService quadraticService) {
         this.quadraticService = quadraticService;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getA() {
+        return a;
+    }
+
+    public void setA(String a) {
+        this.a = a;
+    }
+
+    public String getB() {
+        return b;
+    }
+
+    public void setB(String b) {
+        this.b = b;
+    }
+
+    public String getC() {
+        return c;
+    }
+
+    public void setC(String c) {
+        this.c = c;
     }
 }

@@ -3,23 +3,23 @@
 
 <html xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core">
 <head>
-    <title>Вычисление квадратного уравнения</title>
+    <title>Quadratic equation</title>
 </head>
 <body>
 <h:form>
-    <h3>Вычисление квадратного уравнения</h3>
+    <h3>Calculating the quadratic equation</h3>
     <br/>
-    <h4>Введи коэффициенты квадратного уравнения</h4>
+    <h4>Enter the coefficients of the quadratic equation</h4>
     <h:outputLabel value="A="/>
-    <h:inputText id="a" value="#{quadratic.a}" size="6">
+    <h:inputText id="a" value="#{jsfQuadraticController.a}" size="6" required="true">
         <f:validateRegex pattern= "-?\\d+(\\.\\d+)?"/>
     </h:inputText>
     <h:outputLabel value="B="/>
-    <h:inputText id="b" value="#{quadratic.b}" size="6">
+    <h:inputText id="b" value="#{jsfQuadraticController.b}" size="6" required="true">
         <f:validateRegex pattern= "-?\\d+(\\.\\d+)?"/>
     </h:inputText>
     <h:outputLabel value="C="/>
-    <h:inputText id="c" value="#{quadratic.c}" size="6">
+    <h:inputText id="c" value="#{jsfQuadraticController.c}" size="6" required="true">
         <f:validateRegex pattern= "-?\\d+(\\.\\d+)?"/>
     </h:inputText>
     <br/>

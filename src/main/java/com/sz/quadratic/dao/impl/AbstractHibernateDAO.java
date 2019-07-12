@@ -20,6 +20,10 @@ public abstract class AbstractHibernateDAO<T extends IEntity, P extends Serializ
 	@Autowired
 	protected SessionFactory sessionFactory;
 
+	public void setSessionFactory(SessionFactory sessionFactory){
+		this.sessionFactory = sessionFactory;
+	}
+
     public void setClass(Class<T> clazz) {
     	this.clazz = clazz;
 	}

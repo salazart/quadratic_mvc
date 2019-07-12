@@ -5,7 +5,6 @@ import com.sz.quadratic.exceptions.QuadraticException;
 import com.sz.quadratic.interfaces.IQuadraticService;
 import com.sz.quadratic.models.Quadratic;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,26 +12,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context-for-caching-test.xml"})
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class CachingTest {
-    private List<Quadratic> firstExpectedQuadratics = Arrays.asList(new Quadratic(1, 2, 1));
-    private List<Quadratic> secondExpectedQuadratics = Arrays.asList(new Quadratic(1, 2, 1));
+    private List<Quadratic> firstExpectedQuadratics;
+    private List<Quadratic> secondExpectedQuadratics;
 
     @Autowired
-    ApplicationContext context;
+    private ApplicationContext context;
     @Autowired
     private IDAO dao;
     @Autowired
@@ -42,6 +45,9 @@ public class CachingTest {
 
     @Before
     public void setUp() throws QuadraticException {
+        Quadratic q = new Quadratic(1d, 2d, 1d);
+        firstExpectedQuadratics = Collections.singletonList(q);
+        secondExpectedQuadratics = Arrays.asList(q, q);
         when(dao.getAll()).thenReturn(firstExpectedQuadratics, secondExpectedQuadratics);
     }
 
@@ -49,7 +55,7 @@ public class CachingTest {
     public void testWithOutCaching(){
         List<Quadratic> firstQuadratics = quadraticService.getAllQuadratics();
         List<Quadratic> secondQuadratics = quadraticService.getAllQuadratics();
-        Assert.assertThat(firstQuadratics.hashCode(), is(equalTo(secondQuadratics.hashCode())));
+        assertThat(firstQuadratics.hashCode(), is(equalTo(secondQuadratics.hashCode())));
     }
 
     @Test
@@ -57,7 +63,7 @@ public class CachingTest {
         List<Quadratic> firstQuadratics = quadraticService.getAllQuadratics();
         quadraticService.clearCache();
         List<Quadratic> secondQuadratics = quadraticService.getAllQuadratics();
-        Assert.assertThat(firstQuadratics.hashCode(), is(not(equalTo(secondQuadratics.hashCode()))));
+        assertThat(firstQuadratics.hashCode(), is(not(equalTo(secondQuadratics.hashCode()))));
     }
 
     @Test
